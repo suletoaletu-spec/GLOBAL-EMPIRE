@@ -1,0 +1,48 @@
+# Build directories
+build/
+CMakeFiles/
+Debug/
+Release/
+*.o
+*.a
+*.so
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+empire
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+
+# CMake
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+CMakeUserPresets.json
+
+# Compilation output
+*.cmake
+
+# OS files
+Thumbs.db
+.env
+.env.local
+
+# Testing
+*.gcno
+*.gcda
+coverage/
+
+# Dependencies
+vendor/
+node_modules/
