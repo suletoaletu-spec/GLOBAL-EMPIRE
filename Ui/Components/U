@@ -1,103 +1,260 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <memory>
+#include <stdexcept>
+#include <iomanip>
+#include <ctime>
+
 using namespace std;
 
 // --------------------------
 // 1️⃣ AI AGENT — 24/7 BRAIN 🧠
 // --------------------------
 class AIAgent {
+private:
+    bool isActive;
+    
 public:
-    void assistUser() { cout << "🤖 AI: Always here! Guiding, helping, answering instantly!\n"; }
-    void processOrder() { cout << "🤖 AI: Processing fast, zero mistakes!\n"; }
+    AIAgent() : isActive(true) {}
+    
+    virtual ~AIAgent() = default;
+    
+    void assistUser() {
+        if (!isActive) throw runtime_error("AI Agent is not active");
+        cout << "🤖 AI: Always here! Guiding, helping, answering instantly!\n";
+    }
+    
+    void processOrder(const string& orderId) {
+        if (!isActive) throw runtime_error("AI Agent is not active");
+        if (orderId.empty()) throw invalid_argument("Order ID cannot be empty");
+        cout << "🤖 AI: Processing order " << orderId << " with zero mistakes!\n";
+    }
+    
+    bool getStatus() const { return isActive; }
+    void deactivate() { isActive = false; }
 };
 
 // --------------------------
 // 2️⃣ VERIFIED SELLER & PRODUCTS — 100% REAL ✅🌍
 // --------------------------
 class Seller {
+private:
     string country;
+    string sellerId;
     bool verified;
+    vector<string> products;
+    bool isLive;
+    
 public:
-    Seller(string loc) : country(loc), verified(false) {}
-    
-    void verifyIdentity() { 
-        verified = true; 
-        cout << "✅ Identity Verified — ALL PRODUCTS 100% GENUINE & TRUE!\n"; 
+    Seller(const string& loc, const string& id) 
+        : country(loc), sellerId(id), verified(false), isLive(false) {
+        if (loc.empty() || id.empty()) 
+            throw invalid_argument("Country and Seller ID cannot be empty");
     }
     
-    void postProduct(string item) { 
-        if(verified) cout << "📢 Posted: " << item << " — Trusted Worldwide!\n"; 
+    virtual ~Seller() = default;
+    
+    void verifyIdentity(const string& verificationCode) {
+        if (verificationCode.empty()) 
+            throw invalid_argument("Verification code required");
+        verified = true;
+        cout << "✅ Seller " << sellerId << " from " << country 
+             << " verified — All products are 100% genuine!\n";
     }
     
-    void goLive() { 
-        if(verified) cout << "🎥 LIVE STREAM NOW — Promote, interact, sell live!\n"; 
+    void postProduct(const string& item) {
+        if (!verified) throw runtime_error("Seller not verified. Cannot post products.");
+        if (item.empty()) throw invalid_argument("Product name cannot be empty");
+        
+        products.push_back(item);
+        cout << "📢 Posted: " << item << " — Trusted Worldwide!\n";
     }
+    
+    void goLive() {
+        if (!verified) throw runtime_error("Seller not verified. Cannot go live.");
+        isLive = true;
+        cout << "🎥 LIVE STREAM STARTED — Seller " << sellerId 
+             << " is now live! Promote, interact, and sell!\n";
+    }
+    
+    void goOffline() {
+        isLive = false;
+        cout << "⏹️ LIVE STREAM ENDED — Seller " << sellerId << " is now offline.\n";
+    }
+    
+    bool isVerified() const { return verified; }
+    bool getIsLive() const { return isLive; }
+    const vector<string>& getProducts() const { return products; }
+    string getCountry() const { return country; }
 };
 
 // --------------------------
 // 3️⃣ LIVE STREAM — GIFTS + DIRECT BUY 🎁🛍️
 // --------------------------
 class LiveStream {
+private:
+    double totalRevenue;
+    int totalTransactions;
+    
 public:
-    void sendGift(double amount) { 
-        cout << "🎁 Gift Sent! +$" << amount << " — Instant profit flow!\n"; 
+    LiveStream() : totalRevenue(0.0), totalTransactions(0) {}
+    
+    virtual ~LiveStream() = default;
+    
+    void sendGift(double amount, const string& giftName) {
+        if (amount <= 0) throw invalid_argument("Gift amount must be positive");
+        if (giftName.empty()) throw invalid_argument("Gift name cannot be empty");
+        
+        totalRevenue += amount;
+        totalTransactions++;
+        cout << "🎁 Gift '" << giftName << "' Sent! +$" 
+             << fixed << setprecision(2) << amount << "\n";
     }
-    void buyNow(string product) { 
-        cout << "⚡ BUY DIRECT: " << product << " — One click, done instantly!\n"; 
+    
+    void buyNow(const string& product, double price) {
+        if (product.empty()) throw invalid_argument("Product name cannot be empty");
+        if (price <= 0) throw invalid_argument("Price must be positive");
+        
+        totalRevenue += price;
+        totalTransactions++;
+        cout << "⚡ BUY DIRECT: " << product << " for $" 
+             << fixed << setprecision(2) << price << " — Order confirmed!\n";
     }
+    
+    double getTotalRevenue() const { return totalRevenue; }
+    int getTotalTransactions() const { return totalTransactions; }
 };
 
 // --------------------------
-// 4️⃣ HANDLER — IBM‑STYLE ROCK‑SOLID ⚙️
+// 4️⃣ HANDLER — SYSTEM MANAGEMENT ⚙️
 // --------------------------
 class Handler {
+private:
+    bool isRunning;
+    int operatingCount;
+    
 public:
-    void manageAll() { cout << "🔧 Handler Running Smooth — IBM‑STYLE STABILITY!\n"; }
+    Handler() : isRunning(true), operatingCount(0) {}
+    
+    virtual ~Handler() = default;
+    
+    void manageAll() {
+        if (!isRunning) throw runtime_error("Handler is not running");
+        operatingCount++;
+        cout << "🔧 Handler Running Smoothly — System Stability Maintained! (Operations: " 
+             << operatingCount << ")\n";
+    }
+    
+    void start() {
+        isRunning = true;
+        operatingCount = 0;
+        cout << "✅ Handler Started\n";
+    }
+    
+    void stop() {
+        isRunning = false;
+        cout << "⏹️ Handler Stopped\n";
+    }
+    
+    bool getStatus() const { return isRunning; }
 };
 
 // --------------------------
-// 5️⃣ LOAD / UNLOAD + GOODS + JOBS 📦🚚
+// 5️⃣ LOGISTICS & JOBS 📦🚚
 // --------------------------
 class LogisticsJobs {
+private:
     vector<string> deliveryAgents;
+    vector<pair<string, string>> shipments; // item, destination
+    
 public:
-    void registerForJob(string person) { 
-        deliveryAgents.push_back(person); 
-        cout << "💼 JOB SECURED: " << person << " — Ready to deliver & earn!\n"; 
+    virtual ~LogisticsJobs() = default;
+    
+    void registerForJob(const string& person) {
+        if (person.empty()) throw invalid_argument("Person name cannot be empty");
+        
+        deliveryAgents.push_back(person);
+        cout << "💼 JOB SECURED: " << person << " — Ready to deliver and earn!\n";
     }
-    void moveGoods(string item, string to) { 
-        cout << "🚚 Moving & Delivering: " << item << " → " << to << "\n"; 
+    
+    void moveGoods(const string& item, const string& destination) {
+        if (item.empty() || destination.empty()) 
+            throw invalid_argument("Item and destination cannot be empty");
+        
+        shipments.push_back({item, destination});
+        cout << "🚚 Moving & Delivering: " << item << " → " << destination << "\n";
     }
+    
+    int getDeliveryAgentCount() const { return deliveryAgents.size(); }
+    int getShipmentCount() const { return shipments.size(); }
+    const vector<string>& getAgents() const { return deliveryAgents; }
 };
 
 // ==========================
 // 🚀 RUN THE WHOLE EMPIRE!
 // ==========================
 int main() {
-    cout << "=== WELCOME TO MY EMPIRE — NO APP STORE NEEDED! ===\n\n";
-    
-    AIAgent myAI;
-    Handler bossHandler;
-    LogisticsJobs systemLogistics;
-    LiveStream liveFeature;
-    
-    // Seller from ANY COUNTRY
-    Seller sellerNigeria("Nigeria");
-    Seller sellerUAE("UAE");
-    
-    sellerNigeria.verifyIdentity();
-    sellerNigeria.postProduct("Premium Handmade Goods");
-    sellerNigeria.goLive();
-    
-    liveFeature.sendGift(50.00);
-    liveFeature.buyNow("Premium Handmade Goods");
-    
-    myAI.assistUser();
-    bossHandler.manageAll();
-    systemLogistics.registerForJob("John — Abu Dhabi");
-    systemLogistics.moveGoods("Premium Handmade Goods", "Customer Worldwide");
-    
-    cout << "\n=== SYSTEM RUNNING — $10k → $20M+ INCOMING! YOUR NAME REMEMBERED FOREVER! ===\n";
-    return 0;
+    try {
+        cout << "=== WELCOME TO GLOBAL EMPIRE SYSTEM ===\n\n";
+        
+        // Initialize system components
+        AIAgent myAI;
+        Handler bossHandler;
+        LogisticsJobs systemLogistics;
+        LiveStream liveFeature;
+        
+        // Create sellers from different countries
+        Seller sellerNigeria("Nigeria", "SELLER_NG_001");
+        Seller sellerUAE("UAE", "SELLER_AE_001");
+        
+        // Verify sellers
+        sellerNigeria.verifyIdentity("VER_CODE_123");
+        sellerUAE.verifyIdentity("VER_CODE_456");
+        
+        // Post products
+        sellerNigeria.postProduct("Premium Handmade Goods");
+        sellerNigeria.postProduct("Artisan Crafts");
+        sellerUAE.postProduct("Luxury Electronics");
+        
+        // Start live stream
+        sellerNigeria.goLive();
+        
+        // Process transactions
+        liveFeature.sendGift(50.00, "Premium Package");
+        liveFeature.buyNow("Premium Handmade Goods", 99.99);
+        liveFeature.buyNow("Artisan Crafts", 75.50);
+        
+        // AI assistance
+        myAI.assistUser();
+        myAI.processOrder("ORD_2025_001");
+        
+        // System management
+        bossHandler.manageAll();
+        
+        // Logistics operations
+        systemLogistics.registerForJob("John — Abu Dhabi");
+        systemLogistics.registerForJob("Sarah — Lagos");
+        systemLogistics.moveGoods("Premium Handmade Goods", "Customer Worldwide");
+        systemLogistics.moveGoods("Luxury Electronics", "International Hub");
+        
+        // End live stream
+        sellerNigeria.goOffline();
+        
+        // Summary
+        cout << "\n=== SYSTEM SUMMARY ===\n";
+        cout << "Total Revenue: $" << fixed << setprecision(2) 
+             << liveFeature.getTotalRevenue() << "\n";
+        cout << "Total Transactions: " << liveFeature.getTotalTransactions() << "\n";
+        cout << "Active Delivery Agents: " << systemLogistics.getDeliveryAgentCount() << "\n";
+        cout << "Shipments Processed: " << systemLogistics.getShipmentCount() << "\n";
+        cout << "System Status: " << (bossHandler.getStatus() ? "Running" : "Stopped") << "\n";
+        cout << "\n=== SYSTEM OPERATIONAL — GLOBAL EMPIRE RUNNING SUCCESSFULLY! ===\n";
+        
+        return 0;
+        
+    } catch (const exception& e) {
+        cerr << "ERROR: " << e.what() << endl;
+        return 1;
+    }
 }
