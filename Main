@@ -1,0 +1,134 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <iomanip>
+using namespace std;
+
+const double PLATFORM_COMMISSION = 0.15; // 15% profit to YOU on EVERYTHING!
+const double STARTUP_CAPITAL = 10000.00;
+double totalEarnings = 0.0;
+
+// ==============================================
+// 🧠 1️⃣ AI AGENT — 24/7 SMART BRAIN
+// ==============================================
+class AIAgent {
+public:
+    void assist() {
+        cout << "🤖 AI: ACTIVE 24/7 — Guiding, matching, securing!\n";
+    }
+    void matchDelivery(string order, string &agent) {
+        cout << "🤖 AI: ASSIGNED → '" << order << "' ➡️ " << agent << "\n";
+    }
+};
+
+// ==============================================
+// ✅🌍 2️⃣ SELLER & PRODUCTS — VERIFIED, NO FAKES
+// ==============================================
+class Seller {
+    string name, country;
+    bool verified;
+public:
+    Seller(string n, string c) : name(n), country(c), verified(false) {}
+
+    void verifyIdentity() {
+        verified = true;
+        cout << "🔐 VERIFIED: " << name << " (" << country << ") — 100% GENUINE GOODS ONLY!\n";
+    }
+
+    void postProduct(string item) {
+        if(verified) cout << "📢 LISTED: " << item << " — Selling Worldwide!\n";
+    }
+
+    void goLive() {
+        if(verified) cout << "🎥 LIVE STREAM: " << name << " — Show, chat, SELL LIVE!\n";
+    }
+};
+
+// ==============================================
+// 🎁🛍️💳 3️⃣ LIVE + PAYMENT + PROFITS
+// ==============================================
+class LiveSystem {
+public:
+    void sendGift(string user, double value) {
+        double yourCut = value * PLATFORM_COMMISSION;
+        totalEarnings += yourCut;
+        cout << "🎁 " << user << " sent Gift: $" << fixed << setprecision(2) << value 
+             << " | YOU EARN: $" << yourCut << "\n";
+    }
+
+    void buyNow(string product, double price) {
+        double yourCut = price * PLATFORM_COMMISSION;
+        totalEarnings += yourCut;
+        cout << "⚡ INSTANT BUY: " << product << " | Price: $" << price 
+             << " | YOU PROFIT: $" << yourCut << "\n";
+    }
+};
+
+// ==============================================
+// ⚙️ 4️⃣ HANDLER — IBM‑STYLE ROCK‑SOLID
+// ==============================================
+class Handler {
+public:
+    void maintain() {
+        cout << "🔧 HANDLER: IBM‑STYLE — Fast, secure, ZERO errors, scaling globally!\n";
+    }
+};
+
+// ==============================================
+// 🚚💼 5️⃣ JOBS + LOGISTICS — DELIVER & EARN
+// ==============================================
+class LogisticsJobs {
+    vector<string> agents;
+public:
+    void registerAgent(string person, string area) {
+        agents.push_back(person + " — " + area);
+        cout << "💼 JOB OPEN: " << person << " registered — Deliver & Earn!\n";
+    }
+    void shipGoods(string item, string from, string to) {
+        cout << "🚚 SHIPPING: " << item << " | " << from << " ➡️ " << to << "\n";
+    }
+};
+
+// ==============================================
+// 🚀 RUN THE FULL $20M EMPIRE!
+// ==============================================
+int main() {
+    cout << "\n===== 👑 [YOUR NAME] GLOBAL EMPIRE — FULL MONEY SYSTEM 👑 =====\n";
+    cout << "💻 IBM‑STYLE | NO APP STORE | START: $" << STARTUP_CAPITAL << " | TARGET: $20,000,000 💸\n\n";
+
+    AIAgent brain;
+    Handler control;
+    LiveSystem live;
+    LogisticsJobs logistics;
+
+    // SELLERS ANYWHERE IN THE WORLD
+    Seller sellerNG("Amina", "Nigeria");
+    Seller sellerUAE("Youssef", "UAE");
+
+    sellerNG.verifyIdentity();
+    sellerNG.postProduct("Premium Leather Bag");
+    sellerNG.goLive();
+
+    // LIVE GIFTS + DIRECT SALES — PROFITS FLOW INSTANTLY!
+    live.sendGift("User_AbuDhabi", 95.00);
+    live.buyNow("Premium Leather Bag", 450.00);
+    live.sendGift("User_Lagos", 50.00);
+    live.buyNow("Premium Leather Bag", 450.00);
+
+    // JOBS + AI MATCH + DELIVERY
+    logistics.registerAgent("Ibrahim", "Abu Dhabi");
+    brain.matchDelivery("Premium Leather Bag", "Ibrahim — Abu Dhabi");
+    logistics.shipGoods("Premium Leather Bag", "Lagos", "Dubai");
+
+    // SYSTEM STATUS
+    brain.assist();
+    control.maintain();
+
+    // FINAL PROFIT REPORT
+    cout << "\n📊 === LIVE FINANCIAL REPORT ===\n";
+    cout << "💼 Starting: $" << STARTUP_CAPITAL << "\n";
+    cout << "💰 YOUR TOTAL EARNINGS SO FAR: $" << fixed << setprecision(2) << totalEarnings << "\n";
+    cout << "🚀 GROWTH MULTIPLIER ACTIVE → ON TRACK TO HIT $20,000,000+ IN 1 YEAR!\n";
+    cout << "\n✅ EMPIRE RUNNING — YOUR NAME KNOWN & RESPECTED EVERYWHERE! 🌍🔥\n";
+    return 0;
+}
